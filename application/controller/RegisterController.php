@@ -23,9 +23,9 @@ class RegisterController extends Controller
     public function index()
     {
         if (LoginModel::isUserLoggedIn()) {
-            Redirect::home();
-        } else {
-            $this->View->render('register/index');
+            if (Session::get("user_account_type") == 7){
+                $this->View->render('register/index');
+            }
         }
     }
 
@@ -38,11 +38,11 @@ class RegisterController extends Controller
         $registration_successful = RegistrationModel::registerNewUser();
 
         if ($registration_successful) {
-            Redirect::to('login/index');
-        } else {
-            Redirect::to('register/index');
-        }
+            Redirect::to('/index');
     }
+}
+
+
 
     /**
      * Verify user after activation mail link opened
@@ -67,8 +67,5 @@ class RegisterController extends Controller
      * moment the end-user requests the <img .. >
      * Maybe refactor this sometime.
      */
-    public function showCaptcha()
-    {
-        CaptchaModel::generateAndShowCaptcha();
-    }
+
 }

@@ -23,10 +23,8 @@ class RegistrationModel
         $user_password_repeat = Request::post('user_password_repeat');
 
         // stop registration flow if registrationInputValidation() returns false (= anything breaks the input check rules)
-        $validation_result = self::registrationInputValidation(Request::post('captcha'), $user_name, $user_password_new, $user_password_repeat, $user_email, $user_email_repeat);
-        if (!$validation_result) {
-            return false;
-        }
+        
+
 
         // crypt the password with the PHP 5.5's password_hash() function, results in a 60 character hash string.
         // @see php.net/manual/en/function.password-hash.php for more, especially for potential options
@@ -66,18 +64,26 @@ class RegistrationModel
             Session::add('feedback_negative', Text::get('FEEDBACK_UNKNOWN_ERROR'));
             return false;
         }
-
-        // send verification email
-        if (self::sendVerificationEmail($user_id, $user_email, $user_activation_hash)) {
-            Session::add('feedback_positive', Text::get('FEEDBACK_ACCOUNT_SUCCESSFULLY_CREATED'));
-            return true;
-        }
-
-        // if verification email sending failed: instantly delete the user
-        self::rollbackRegistrationByUserId($user_id);
-        Session::add('feedback_negative', Text::get('FEEDBACK_VERIFICATION_MAIL_SENDING_FAILED'));
-        return false;
+    return true;
     }
+
+//     public static function activateUser($user_id)
+// {
+//     $database = DatabaseFactory::getFactory()->getConnection();
+
+//     $sql = "UPDATE users SET user_active = 1, user_activation_hash = NULL
+//             WHERE user_id = :user_id AND user_activation_hash = :user_activation_hash LIMIT 1";
+//     $query = $database->prepare($sql);
+//     $query->execute(array(':user_id' => $user_id));
+
+//     if ($query->rowCount() == 1) {
+//         Session::add('feedback_positive', Text::get('FEEDBACK_ACCOUNT_ACTIVATION_SUCCESSFUL'));
+//         return true;
+//     }
+
+//     Session::add('feedback_negative', Text::get('FEEDBACK_ACCOUNT_ACTIVATION_FAILED'));
+//     return false;
+// }
 
     /**
      * Validates the registration input
@@ -205,14 +211,14 @@ class RegistrationModel
         $database = DatabaseFactory::getFactory()->getConnection();
 
         // write new users data into database
-        $sql = "INSERT INTO users (user_name, user_password_hash, user_email, user_creation_timestamp, user_activation_hash, user_provider_type)
-                    VALUES (:user_name, :user_password_hash, :user_email, :user_creation_timestamp, :user_activation_hash, :user_provider_type)";
+        $sql = "INSERT INTO users (user_name, user_password_hash, user_email, user_creation_timestamp, user_active, user_provider_type)
+                    VALUES (:user_name, :user_password_hash, :user_email, :user_creation_timestamp, :user_active, :user_provider_type)";
         $query = $database->prepare($sql);
         $query->execute(array(':user_name' => $user_name,
                               ':user_password_hash' => $user_password_hash,
                               ':user_email' => $user_email,
                               ':user_creation_timestamp' => $user_creation_timestamp,
-                              ':user_activation_hash' => $user_activation_hash,
+                              ':user_active' => '1',
                               ':user_provider_type' => 'DEFAULT'));
         $count =  $query->rowCount();
         if ($count == 1) {
