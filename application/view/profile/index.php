@@ -24,19 +24,11 @@
                 </tr>
                 </thead>
                 <?php foreach ($this->users as $user) { 
-                    $profileType = 0;
-                    if($user->user_account_type == 7){
-                        $profileType = "Admin";
-                    }
-                    else if($user->user_account_type == 1){
-                        $profileType = "Guest";
-                    }
-                    else if($user->user_account_type == 2){
-                        $profileType = "User";
-                    }
-                    else{
-                        $profileType = "Unknown";
-                    }
+                    $profileType = "Unknown";
+                    foreach($this->userRoles as $roles){
+                    if($user->user_account_type == $roles->AccountTypeID){
+                        $profileType = $roles->AccountTypeName;
+                    }}
                     ?>
                     <tr class="<?= ($user->user_active == 0 ? 'inactive' : 'active'); ?>">
                         <td><?= $user->user_id; ?></td>

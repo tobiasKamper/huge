@@ -17,7 +17,9 @@ class ProfileController extends Controller
     public function index()
     {
         $this->View->render('profile/index', array(
-            'users' => UserModel::getPublicProfilesOfAllUsers())
+            'users' => UserModel::getPublicProfilesOfAllUsers(),
+            'userRoles' => UserRoleModel::getRoleFromDatabase())
+
         );
     }
 
