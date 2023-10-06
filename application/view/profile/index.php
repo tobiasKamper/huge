@@ -11,7 +11,12 @@
             build things that use profile information of one or multiple/all users.
         </div>
         <div>
-            <table class="overview-table">
+            <script>
+                $(document).ready( function () {
+                    $('#profileID').DataTable();
+                } );
+            </script>
+            <table class="overview-table" id="profileID">
                 <thead>
                 <tr>
                     <td>Id</td>

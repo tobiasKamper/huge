@@ -12,37 +12,50 @@
             This controller/action/view shows a list of all users in the system. with the ability to soft delete a user
             or suspend a user.
         </div>
+        
+       
         <div>
-            <table class="overview-table">
-                <thead>
+
+            <table class="overview-table" id="adminID">
+            <script>
+                $(document).ready( function () {
+                    $('#adminID').DataTable();
+                } );
+            </script>
+            <thead>
                 <tr>
-                    <td>Id</td>
-                    <td>Avatar</td>
-                    <td>Username</td>
-                    <td>User's email</td>
-                    <td>Activated ?</td>
-                    <td>Link to user's profile</td>
-                    <td>Adjust privileges</td>
-                    <td>suspension Time in days</td>
-                    <td>Soft delete</td>
-                    <td>Submit</td>
-                </tr>
-                </thead>
+                    <th>Id</th>
+                    <th>Avatar</th>
+                    <th>Username</th>
+                    <th>User's email</th>
+                    <th>Activated ?</th>
+                    <th>Link to user's profile</th>
+                    <th>Adjust privileges</th>
+                    <th>suspension Time in days</th>
+                    <th>Soft delete</th>
+                    <th>Submit</th>
+            </tr>
+            </thead>
+            <tbody>
                 <?php foreach ($this->users as $user) { ?>
                     <tr class="<?= ($user->user_active == 0 ? 'inactive' : 'active'); ?>">
                         <td><?= $user->user_id; ?></td>
+                        
                         <td class="avatar">
                             <?php if (isset($user->user_avatar_link)) { ?>
                                 <img src="<?= $user->user_avatar_link; ?>"/>
                             <?php } ?>
                         </td>
+                        
                         <td><?= $user->user_name; ?></td>
+                        
                         <td><?= $user->user_email; ?></td>
+                        
                         <td><?= ($user->user_active == 0 ? 'No' : 'Yes'); ?></td>
+
                         <td>
                             <a href="<?= Config::get('URL') . 'profile/showProfile/' . $user->user_id; ?>">Profile</a>
                         </td>
-
 
                         <form action="<?= config::get("URL"); ?>admin/actionAccountSettings" method="post">
                         <td>
@@ -57,7 +70,6 @@
                                <?php
                             }
                             else{
-                            // $tempArray.array_push($roles->AccountTypeName);
                             $tempArray[$roles->AccountTypeID] = new stdClass();
                             $tempArray[$roles->AccountTypeID]->AccountTypeName = $roles->AccountTypeName;
                             }
@@ -68,23 +80,11 @@
                             <option value="<?php echo"$arrayElement->AccountTypeName" ?>"><?php echo"$arrayElement->AccountTypeName" ?></option>
                             <?php
                         }
-                        ?></select></td>
-                            
-
-
-
-
-
-
-
-
-
-
+                        ?></select></td>            
 
                             <td><input type="number" name="suspension" /></td>
+
                             <td><input type="checkbox" name="softDelete" <?php if ($user->user_deleted) { ?> checked <?php } ?> /></td>
-                            <td>
-                               
 
                             <td>
                                 <input type="hidden" name="user_id" value="<?= $user->user_id; ?>" />
@@ -92,7 +92,7 @@
                             </td>
                         </form>
                     </tr>
-                <?php } ?>
+                <?php } ?></tbody>
             </table>
         </div>
     </div>
