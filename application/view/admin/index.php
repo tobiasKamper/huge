@@ -22,6 +22,7 @@
                     <td>User's email</td>
                     <td>Activated ?</td>
                     <td>Link to user's profile</td>
+                    <td>Adjust privileges</td>
                     <td>suspension Time in days</td>
                     <td>Soft delete</td>
                     <td>Submit</td>
@@ -41,9 +42,50 @@
                         <td>
                             <a href="<?= Config::get('URL') . 'profile/showProfile/' . $user->user_id; ?>">Profile</a>
                         </td>
+
+
                         <form action="<?= config::get("URL"); ?>admin/actionAccountSettings" method="post">
+                        <td>
+                        <select name = "accountType">
+                        <?php 
+                        $tempArray = array();
+                        foreach ($this->userRoles as $roles){
+                        if($user->user_account_type == $roles->AccountTypeID)
+                            {
+                               ?> 
+                               <option value="<?php echo"$roles->AccountTypeName" ?>"><?php echo"$roles->AccountTypeName" ?></option>
+                               <?php
+                            }
+                            else{
+                            // $tempArray.array_push($roles->AccountTypeName);
+                            $tempArray[$roles->AccountTypeID] = new stdClass();
+                            $tempArray[$roles->AccountTypeID]->AccountTypeName = $roles->AccountTypeName;
+                            }
+                        }
+                        foreach($tempArray as $arrayElement)
+                        {
+                            ?> 
+                            <option value="<?php echo"$arrayElement->AccountTypeName" ?>"><?php echo"$arrayElement->AccountTypeName" ?></option>
+                            <?php
+                        }
+                        ?></select></td>
+                            
+
+
+
+
+
+
+
+
+
+
+
                             <td><input type="number" name="suspension" /></td>
                             <td><input type="checkbox" name="softDelete" <?php if ($user->user_deleted) { ?> checked <?php } ?> /></td>
+                            <td>
+                               
+
                             <td>
                                 <input type="hidden" name="user_id" value="<?= $user->user_id; ?>" />
                                 <input type="submit" />

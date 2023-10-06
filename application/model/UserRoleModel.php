@@ -39,6 +39,30 @@ class UserRoleModel
      *
      * @return bool
      */
+public static function getRoleFromDatabase()
+{    
+            $database = DatabaseFactory::getFactory()->getConnection();
+            $sql = "SELECT * FROM usertypetranslation";
+            $query = $database->prepare($sql);
+            $query->execute();
+
+
+
+            $userRoles = array();
+
+            foreach ($query->fetchAll() as $fetched) {
+    
+                
+                array_walk_recursive($fetched, 'Filter::XSSFilter');
+    
+                $userRoles[$fetched->AccountTypeID] = new stdClass();
+                $userRoles[$fetched->AccountTypeID]->AccountTypeID = $fetched->AccountTypeID;
+                $userRoles[$fetched->AccountTypeID]->AccountTypeName = $fetched->AccountTypeName;
+            }
+    
+            return $userRoles;
+}
+
     public static function saveRoleToDatabase($type)
     {
         // if $type is not 1 or 2

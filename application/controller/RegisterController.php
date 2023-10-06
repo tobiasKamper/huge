@@ -23,7 +23,7 @@ class RegisterController extends Controller
     public function index()
     {
         if (LoginModel::isUserLoggedIn()) {
-            if (Session::get("user_account_type") == 7){
+            if (Auth::checkAdminAuthentication()){
                 $this->View->render('register/index');
             }
         }

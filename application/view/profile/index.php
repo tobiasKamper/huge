@@ -19,10 +19,25 @@
                     <td>Username</td>
                     <td>User's email</td>
                     <td>Activated ?</td>
+                    <td>Profile type</td>
                     <td>Link to user's profile</td>
                 </tr>
                 </thead>
-                <?php foreach ($this->users as $user) { ?>
+                <?php foreach ($this->users as $user) { 
+                    $profileType = 0;
+                    if($user->user_account_type == 7){
+                        $profileType = "Admin";
+                    }
+                    else if($user->user_account_type == 1){
+                        $profileType = "Guest";
+                    }
+                    else if($user->user_account_type == 2){
+                        $profileType = "User";
+                    }
+                    else{
+                        $profileType = "Unknown";
+                    }
+                    ?>
                     <tr class="<?= ($user->user_active == 0 ? 'inactive' : 'active'); ?>">
                         <td><?= $user->user_id; ?></td>
                         <td class="avatar">
@@ -33,6 +48,7 @@
                         <td><?= $user->user_name; ?></td>
                         <td><?= $user->user_email; ?></td>
                         <td><?= ($user->user_active == 0 ? 'No' : 'Yes'); ?></td>
+                        <td><?= $profileType; ?></td>
                         <td>
                             <a href="<?= Config::get('URL') . 'profile/showProfile/' . $user->user_id; ?>">Profile</a>
                         </td>
