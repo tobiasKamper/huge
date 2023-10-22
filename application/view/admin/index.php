@@ -66,18 +66,19 @@
                         if($user->user_account_type == $roles->AccountTypeID)
                             {
                                ?> 
-                               <option value="<?php echo"$roles->AccountTypeName" ?>"><?php echo"$roles->AccountTypeName" ?></option>
+                               <option value="<?php echo"$roles->AccountTypeID" ?>"><?php echo"$roles->AccountTypeName" ?></option>
                                <?php
                             }
                             else{
                             $tempArray[$roles->AccountTypeID] = new stdClass();
                             $tempArray[$roles->AccountTypeID]->AccountTypeName = $roles->AccountTypeName;
+                            $tempArray[$roles->AccountTypeID]->AccountTypeID = $roles->AccountTypeID;
                             }
                         }
                         foreach($tempArray as $arrayElement)
                         {
                             ?> 
-                            <option value="<?php echo"$arrayElement->AccountTypeName" ?>"><?php echo"$arrayElement->AccountTypeName" ?></option>
+                            <option value="<?php echo"$arrayElement->AccountTypeID" ?>"><?php echo"$arrayElement->AccountTypeName" ?></option>
                             <?php
                         }
                         ?></select></td>            

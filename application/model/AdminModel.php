@@ -47,9 +47,9 @@ class AdminModel
 
     public static function setAccountType($accountType, $userId){
         
-        if($accountType == "Admin"){$accountType = 7;}
-        else if($accountType == "User"){$accountType = 2;}
-        else if($accountType == "Guest"){$accountType = 1;}
+        // if($accountType == "Admin"){$accountType = 7;}
+        // else if($accountType == "User"){$accountType = 2;}
+        // else if($accountType == "Guest"){$accountType = 1;}
         $database = DatabaseFactory::getFactory()->getConnection();
 
         $query = $database->prepare("UPDATE users SET user_account_type = :user_account_type  WHERE user_id = :user_id LIMIT 1");
