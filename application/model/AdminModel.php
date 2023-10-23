@@ -52,7 +52,7 @@ class AdminModel
         // else if($accountType == "Guest"){$accountType = 1;}
         $database = DatabaseFactory::getFactory()->getConnection();
 
-        $query = $database->prepare("UPDATE users SET user_account_type = :user_account_type  WHERE user_id = :user_id LIMIT 1");
+        $query = $database->prepare("CALL updateAccountType(:user_account_type, :user_id)");
         $query->execute(array(
                 ':user_account_type' => $accountType,
                 ':user_id' => $userId
