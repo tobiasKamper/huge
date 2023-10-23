@@ -28,6 +28,25 @@ class ChatController extends Controller
         );
     }
 
+    public function createNewGroupEntry(){
+        ChatModel::createNewGroupEntry(
+            Request::post('fromUser'), Request::post('text')
+        );
+        $this->View->render('chat/showGroupChat', array(
+            'chatData' => ChatModel::getGroupMessages(),
+        ));
+    }
+
+    public function getGroupMessages()
+    {
+        ChatModel::updateIsReadGroup();
+
+        $this->View->render('chat/showGroupChat', array(
+            'chatData' => ChatModel::getGroupMessages(),
+        ));
+        // Redirect::to("chat");
+    }
+
     public function getCountUnreadMessages()
     {
         ChatModel::getNumberOfNewMessages(

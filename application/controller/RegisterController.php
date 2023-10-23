@@ -23,9 +23,9 @@ class RegisterController extends Controller
     public function index()
     {
         if (LoginModel::isUserLoggedIn()) {
-            if (Auth::checkAdminAuthentication()){
+            // if (Auth::checkAdminAuthentication()){
                 $this->View->render('register/index');
-            }
+            // }
         }
     }
 

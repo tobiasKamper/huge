@@ -26,6 +26,66 @@
             </tr>
             </thead>
             <tbody>
+            <!-- Group -->
+            <tr>
+            <td>
+                <?php
+                echo "";
+                ?>
+            </td>
+            <td>
+                <!-- NO PROFILE PICTURE -->
+            </td>
+                <td>
+                    <?php 
+                    foreach($this->userRoles as $uRole)
+                    {
+                        if($uRole->AccountTypeID == Session::get('user_account_type'))
+                        {
+                            echo "<b>" . $uRole->AccountTypeName . "-Group </b>";
+                        }
+                    }
+                    
+                    ?>
+                </td>
+                        <!-- CHAT BTN -->
+                    <form action="<?= config::get("URL"); ?>Chat/getGroupMessages" method="post">
+                    <input type="hidden" name="groupId" value="<?php  
+                     foreach($this->users as $user) {
+                        if($user->user_id == Session::get('user_id'))
+                        {
+                            echo $user->user_account_type;
+                        }}
+                      ?>" >
+                        <td>
+                        <input type="submit" input="Chat"value="Chat" />
+                    </form>
+                    </td>
+                    
+                    
+                    
+                    <td>
+                    <?php 
+                        if(isset($this->newMessages["group"])){
+                            if($this->newMessages["group"] != 0){
+                            echo $this->newMessages["group"]. " new messages";
+                        }
+                        else{
+                            echo "";
+                        }
+                        }
+                        else{
+                            echo "";
+                        }
+                            ?>
+                    </td>
+
+
+            </tr>
+
+
+
+            <!-- USERS -->
                 <?php foreach ($this->users as $user) { 
                     if($user->user_id == Session::get('user_id'))continue;?>
 
